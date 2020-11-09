@@ -14,6 +14,11 @@ bool EmptyProgressProc(double percent)
 
 std::wstring ImgBBUpload(std::wstring imagepath, std::wstring apikey)
 {
+	if (apikey == L"")
+	{
+		wprintf(L"No API Key provided");
+		exit(0);
+	}
 	std::wstring returnUrl = L"";
 	std::wstring duration = L"600";
 	std::wstring boundary = L"------------ImgBB_Uploader_28083191_Code_";
@@ -32,14 +37,14 @@ std::wstring ImgBBUpload(std::wstring imagepath, std::wstring apikey)
 		CloseHandle(hFile);
 
 		DWORD nLenOut = dwFileSize * 2;
-		char* pDst = new char[nLenOut];		
+		char* pDst = new char[nLenOut];
 		CryptBinaryToStringA((const BYTE*)imageContent, dwFileSize, CRYPT_STRING_BASE64, pDst, &nLenOut);
 
 		std::string body = "";
 		body = "--" + bound + "\r\n";
 		body += "Content-Disposition: form-data; name=\"image\"\r\n\r\n";
 		body += pDst;
-	
+
 		delete pDst;
 		body += "--" + bound + "--\r\n";
 
@@ -48,10 +53,10 @@ std::wstring ImgBBUpload(std::wstring imagepath, std::wstring apikey)
 		client.SetUserClient(L"ImgBB Uploader 28083191 v.1");
 		client.SetAdditionalRequestHeaders(L"Content-Type: multipart/form-data; boundary=" + boundary);
 		client.SetAdditionalDataToSend((BYTE*)body.c_str(), body.size());
-		client.SendHttpRequest(L"POST");		
+		client.SendHttpRequest(L"POST");
 		delete imageContent;
 		std::wstring response = client.GetResponseContent();
-		
+
 		JSONValue* pValue = JSON::Parse(response.c_str());
 		if (pValue)
 		{
@@ -62,7 +67,7 @@ std::wstring ImgBBUpload(std::wstring imagepath, std::wstring apikey)
 			{
 				if (data->Child(L"url"))
 					returnUrl = data->Child(L"url")->AsString();
-			}			
+			}
 			else
 			{
 				JSONValue* error = pValue->Child(L"error");
@@ -73,7 +78,7 @@ std::wstring ImgBBUpload(std::wstring imagepath, std::wstring apikey)
 				}
 			}
 			delete pValue;
-		}		
+		}
 		else
 		{
 			returnUrl = L"JSON ERROR: Malformed response form server";

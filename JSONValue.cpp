@@ -378,7 +378,7 @@ JSONValue::JSONValue(double m_number_value)
 JSONValue::JSONValue(int m_integer_value)
 {
 	type = JSONType_Number;
-	number_value = (double) m_integer_value;
+	number_value = (double)m_integer_value;
 }
 
 /**

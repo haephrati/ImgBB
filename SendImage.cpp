@@ -2,18 +2,20 @@
 //
 
 #include <Windows.h>
+#include <atlbase.h>
 #include <iostream>
 
 #include <string>
 #include "imgbb.h"
 
-#define API_KEY L"<PLACE HERE YOUR API KEY>"
+#define API_KEY L"43d965d6bf63c2d0a78e09a83ccb19ff" // <PLACE HERE YOUR API KEY>
 
 int main()
 {
-    std::cout << "Demo of uploading an image to ImgBB\n";
-	std::wstring imagePath = L"107705921_988368374919704_2553169134592330136_n.jpg";
+	wprintf(L"Demo of uploading an image to ImgBB\n");
+	std::wstring imagePath = L"running.jpg";
 	std::wstring url = ImgBBUpload(imagePath, API_KEY);
-	MessageBox(NULL, url.c_str(), L"", MB_OK);
+	ShellExecute(GetActiveWindow(), L"OPEN", url.c_str(), NULL, NULL, TRUE);
+	MessageBox(NULL, url.c_str(), L"Opening image from ", MB_OK);
 }
 
