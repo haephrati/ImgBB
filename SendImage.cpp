@@ -8,7 +8,7 @@
 #include <string>
 #include "imgbb.h"
 
-#define API_KEY L"43d965d6bf63c2d0a78e09a83ccb19ff" // <PLACE HERE YOUR API KEY>
+#define API_KEY L"" // <PLACE HERE YOUR API KEY>
 
 int main()
 {

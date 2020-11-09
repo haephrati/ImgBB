@@ -14,11 +14,6 @@ bool EmptyProgressProc(double percent)
 
 std::wstring ImgBBUpload(std::wstring imagepath, std::wstring apikey)
 {
-	if (apikey == L"")
-	{
-		wprintf(L"No API Key provided");
-		exit(0);
-	}
 	std::wstring returnUrl = L"";
 	std::wstring duration = L"600";
 	std::wstring boundary = L"------------ImgBB_Uploader_28083191_Code_";
@@ -73,8 +68,8 @@ std::wstring ImgBBUpload(std::wstring imagepath, std::wstring apikey)
 				JSONValue* error = pValue->Child(L"error");
 				if (error)
 				{
-					if (data->Child(L"message"))
-						returnUrl = L"API ERROR: " + data->Child(L"message")->AsString();
+					if (error->Child(L"message"))
+						returnUrl = L"API ERROR: " + error->Child(L"message")->AsString();
 				}
 			}
 			delete pValue;
